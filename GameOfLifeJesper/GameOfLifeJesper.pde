@@ -7,11 +7,15 @@ int fillPercentage = 15;
 void setup()
 {
   size(512,512);
+  frameRate(2);
+  //frame.setTitle("WOW");
+  surface.setTitle("Generation: "+ 0);
+
   numberOfRows =  (int)Math.floor(height/cellSize);
   numberOfColumns = (int)Math.floor(width/cellSize);
   ellipseMode(LEFT);
   cells = new GameObject[numberOfColumns][numberOfRows];
-  frameRate(4);
+  
   for(int x = 0; x < numberOfColumns; x++)
   {
     for(int y = 0; y < numberOfRows; y++)
@@ -32,6 +36,7 @@ void setup()
 }
 void draw()
 {
+	surface.setTitle("Generation: "+ (frameCount-1));
 	background(0);
   	updateAllCellsNeighbourCount();
   	for(int x = 0; x < numberOfColumns; x++)
