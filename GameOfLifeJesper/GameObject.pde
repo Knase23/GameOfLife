@@ -13,8 +13,27 @@ public class GameObject
   
   public void draw()
   {
+    color c = color(120, 120, 0);
     if(alive)
     {
+      switch (numberOfNeighbours) {
+        case 0 :
+          c = color(255, 30, 30);
+        break; 
+        case 1 :
+          c = color(100,100,150);
+        break;
+        case 2 :
+          c = color(30,255,30);
+        break;  
+        case 3 :
+          c = color(30,100,100);
+        break;     
+         default :  
+          c = color(255, 30, 30);
+        break; 
+      }
+      fill(c);
       ellipse(this.x,this.y,this.size,this.size);
     }
   }
