@@ -12,10 +12,10 @@ public class ToggleStruct{
 	public boolean CheckLastTime(boolean isItPressed) {
 
 		boolean result = false;
-		if(isItPressed && currentTime - lastTime > timeInBetweenChecks || lastTime == 0)
+		if(isItPressed && time - lastTime > timeInBetweenChecks || lastTime == 0)
 		{
 			result = true;
-			lastTime = currentTime;
+			lastTime = time;
 		}
 
 		return result;

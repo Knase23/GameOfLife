@@ -31,6 +31,7 @@ void setup()
     }
   }
 
+
   /* Test a stabile pattern: Block*/
   // cells[1][1].alive = true;
   // cells[1][2].alive = true;
@@ -44,49 +45,53 @@ void setup()
   // cells[3][2].alive = true;
   // cells[3][1].alive = true;
   // cells[3][0].alive = true;
+  updateAllCellsNeighbourCount();
 }
 int ownFrameLimit = 2;
 int lastFrame;
-int currentTime;
+int time;
+int deltaTime;
+float timeToPass = 1000f/(float)ownFrameLimit;
+
 void draw()
 {
-  int time = millis();
+  int currentTime = millis();
+  deltaTime = currentTime - time; 
   runNexGen = spaceTogg.toggled;
-
   println(frameRate);
   //println(spaceTogg.toggled);
   //println("ownFrameLimit: "+ownFrameLimit);
   
   toggleChecks();
-  updateTitle();
   increaseDecreaseTimeBetweenFrames();
 
   /*Draws out depending on time since last frame*/
-  if(currentTime - lastFrame > 1000f/(float)ownFrameLimit)
+  if(currentTime - lastFrame > timeToPass)
   {
-    background(0);
-    updateAllCellsNeighbourCount();
-  	 for(int x = 0; x < numberOfColumns; x++)
-  	 {
-      	for(int y = 0; y < numberOfRows; y++)
-      	{
-        		cells[x][y].draw();
-
-            if(runNexGen)
-            {
-              cells[x][y].checkIfAlive();
-            }
-      	}
-  	 }
-      if(runNexGen)
-      {
+    if(runNexGen)
+    {
+        updateAllCellsNeighbourCount();
         generationNumber++;
-      }
-      lastFrame = time;
     }
-    currentTime = time;
-  //backSpaceOnce = true;
+    background(0);
+  	for(int x = 0; x < numberOfColumns; x++)
+  	{
+     	for(int y = 0; y < numberOfRows; y++)
+     	{
+
+       	cells[x][y].draw();
+        if(runNexGen)
+        {
+           cells[x][y].checkIfAlive();
+        }
+      }
+  	 }
+     lastFrame = currentTime;
+  }
+  time = currentTime;
+  updateTitle();
   
+  //backSpaceOnce = true; 
 }
 public void updateAllCellsNeighbourCount()
 {
@@ -125,6 +130,7 @@ public void increaseDecreaseTimeBetweenFrames()
   if(isNumpadPlusPressed) //&& !isNumpadPlusStillPressed)
   {
     ownFrameLimit++;
+    timeToPass = 1000f/(float)ownFrameLimit;
   }
   //isNumpadPlusStillPressed = isNumpadPlusPressed;
   
@@ -134,6 +140,7 @@ public void increaseDecreaseTimeBetweenFrames()
     ownFrameLimit--;
     if(ownFrameLimit < 1)
       ownFrameLimit = 1;
+    timeToPass = 1000f/(float)ownFrameLimit;
   }
   //isNumpadMinusStillPressed = isNumpadMinusPressed;
 
