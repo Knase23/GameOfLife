@@ -51,15 +51,14 @@ int currentTime;
 void draw()
 {
   int time = millis();
-
-  //println(spaceTogg.toggled);
-  println("ownFrameLimit: "+ownFrameLimit);
-  
-   toggleChecks();
   runNexGen = spaceTogg.toggled;
+
+  println(frameRate);
+  //println(spaceTogg.toggled);
+  //println("ownFrameLimit: "+ownFrameLimit);
   
-	
-  surface.setTitle("Generation: "+ generationNumber);
+  toggleChecks();
+  updateTitle();
   increaseDecreaseTimeBetweenFrames();
 
   /*Draws out depending on time since last frame*/
@@ -95,23 +94,27 @@ public void updateAllCellsNeighbourCount()
   {
     for(int y = 0; y < numberOfRows; y++)
     {
-      int numberOfCellsAround = 0;
-
+      int numberOfLivingAround = 0;
+      /*Top to Bottom*/
       for (int i = -1; i < 2; ++i) {
+        /* Check if (x + i) is outside of the Array*/
       	if(x + i >= 0 && x + i < numberOfColumns)
       	{
+          /*Right to Left*/
       		for (int j = -1; j < 2; ++j) {
+            /* Check if (y + j) is outside of the Array */
       			if(y + j >= 0 && y + j < numberOfRows)
       			{
+              /*Count up: number of living neighbours*/
       				if(cells[x+i][y+j].alive && !(i == 0 && j == 0))
       				{
-      					numberOfCellsAround++;
+      					numberOfLivingAround++;
       				}
       			}
       		}
       	}
       }
-      cells[x][y].numberOfNeighbours = numberOfCellsAround;
+      cells[x][y].numberOfNeighbours = numberOfLivingAround;
     }
   }
 }
@@ -119,24 +122,39 @@ public void updateAllCellsNeighbourCount()
 public void increaseDecreaseTimeBetweenFrames()
 {
   /* Increases the time interval when next time it should draw out*/
-  
   if(isNumpadPlusPressed) //&& !isNumpadPlusStillPressed)
   {
     ownFrameLimit++;
-    println("Increase FrameLimit");
   }
-
   //isNumpadPlusStillPressed = isNumpadPlusPressed;
-/* Increases the time interval when next time it should draw out*/
+  
+  /* Increases the time interval when next time it should draw out*/
   if(isNumpadMinusPressed)// && !isNumpadMinusStillPressed)
   {
     ownFrameLimit--;
     if(ownFrameLimit < 1)
       ownFrameLimit = 1;
-
-    println("Decrease FrameLimit");
   }
   //isNumpadMinusStillPressed = isNumpadMinusPressed;
 
 
+}
+public void updateTitle()
+{
+  String titleString = "Generation: "+ generationNumber;
+  titleString = titleString + " | FrameLimit: "+ ownFrameLimit;
+
+  if (!runNexGen)
+    titleString = titleString + " | Paused"; 
+
+  if(isSpacePressed)
+    titleString = titleString + " | Spacebar";
+
+  if(isNumpadPlusPressed)
+    titleString = titleString + " | Increase FrameLimit";
+
+  if(isNumpadMinusPressed)
+    titleString = titleString + " | Decrease FrameLimit";
+
+  surface.setTitle(titleString);
 }
