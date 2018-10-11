@@ -52,12 +52,18 @@ void draw()
 {
   int time = millis();
 
-
-  println(spaceTogg.toggled);
+  //println(spaceTogg.toggled);
+  println("ownFrameLimit: "+ownFrameLimit);
+  
+   toggleChecks();
   runNexGen = spaceTogg.toggled;
-  toggle();
-	surface.setTitle("Generation: "+ generationNumber);
-  if(currentTime - lastFrame > 1000/ownFrameLimit)
+  
+	
+  surface.setTitle("Generation: "+ generationNumber);
+  increaseDecreaseTimeBetweenFrames();
+
+  /*Draws out depending on time since last frame*/
+  if(currentTime - lastFrame > 1000f/(float)ownFrameLimit)
   {
     background(0);
     updateAllCellsNeighbourCount();
@@ -66,6 +72,7 @@ void draw()
       	for(int y = 0; y < numberOfRows; y++)
       	{
         		cells[x][y].draw();
+
             if(runNexGen)
             {
               cells[x][y].checkIfAlive();
@@ -109,3 +116,27 @@ public void updateAllCellsNeighbourCount()
   }
 }
 
+public void increaseDecreaseTimeBetweenFrames()
+{
+  /* Increases the time interval when next time it should draw out*/
+  
+  if(isNumpadPlusPressed) //&& !isNumpadPlusStillPressed)
+  {
+    ownFrameLimit++;
+    println("Increase FrameLimit");
+  }
+
+  //isNumpadPlusStillPressed = isNumpadPlusPressed;
+/* Increases the time interval when next time it should draw out*/
+  if(isNumpadMinusPressed)// && !isNumpadMinusStillPressed)
+  {
+    ownFrameLimit--;
+    if(ownFrameLimit < 1)
+      ownFrameLimit = 1;
+
+    println("Decrease FrameLimit");
+  }
+  //isNumpadMinusStillPressed = isNumpadMinusPressed;
+
+
+}

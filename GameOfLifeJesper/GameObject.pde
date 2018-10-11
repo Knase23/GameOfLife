@@ -15,7 +15,7 @@ public class GameObject
   
   public void draw()
   {
-    
+    stroke(50); 
     if(alive)
     {
       alphaV = 255;
@@ -36,13 +36,13 @@ public class GameObject
           apperanceColor = color(255, 30, 30);
         break; 
       }
+      
       fill(apperanceColor,alphaV);
       ellipse(this.x,this.y,this.size,this.size);
     } else {
       alphaV -= 150;
       fill(apperanceColor,alphaV);
       ellipse(this.x,this.y,this.size,this.size);
-      
     }
   }
 
