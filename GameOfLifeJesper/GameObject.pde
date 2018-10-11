@@ -3,6 +3,8 @@ public class GameObject
   public float x,y,size;
   public boolean alive = false;
   public int numberOfNeighbours = 0;
+  public float alphaV = 255;
+  public color apperanceColor = color(0, 0, 0);
   
   public GameObject(float x,float y,float size)
   {
@@ -13,33 +15,42 @@ public class GameObject
   
   public void draw()
   {
-    color c = color(120, 120, 0);
+    
     if(alive)
     {
+      alphaV = 255;
       switch (numberOfNeighbours) {
         case 0 :
-          c = color(255, 30, 30);
+          apperanceColor = color(255, 30, 30);
         break; 
         case 1 :
-          c = color(100,100,150);
+          apperanceColor = color(35,125,125);
         break;
         case 2 :
-          c = color(30,255,30);
+          apperanceColor = color(30,255,30);
         break;  
         case 3 :
-          c = color(30,100,100);
+          apperanceColor = color(30,100,100);
         break;     
          default :  
-          c = color(255, 30, 30);
+          apperanceColor = color(255, 30, 30);
         break; 
       }
-      fill(c);
+      fill(apperanceColor,alphaV);
       ellipse(this.x,this.y,this.size,this.size);
+    } else {
+      alphaV -= 150;
+      fill(apperanceColor,alphaV);
+      ellipse(this.x,this.y,this.size,this.size);
+      
     }
   }
+
+
   public void checkIfAlive() {
     if(numberOfNeighbours < 2)
     {
+      
       alive = false;
     } else if(numberOfNeighbours > 3)
     {
