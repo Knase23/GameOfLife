@@ -16,9 +16,11 @@ public class GameObject
   public void draw()
   {
     stroke(50); 
+
     if(alive)
     {
       alphaV = 255;
+      /*Change color depending on how many neighbours around it*/
       switch (numberOfNeighbours) {
         case 0 :
           apperanceColor = color(255, 30, 30);
@@ -50,12 +52,14 @@ public class GameObject
   public void checkIfAlive() {
     if(numberOfNeighbours < 2)
     {
-      
       alive = false;
-    } else if(numberOfNeighbours > 3)
+    } 
+    else if(numberOfNeighbours > 3)
     {
       alive = false;
-    } else if(alive){
+    } 
+    else if(alive)
+    {
       alive = true;
     }
 

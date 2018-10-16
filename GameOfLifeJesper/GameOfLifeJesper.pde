@@ -1,16 +1,23 @@
-GameObject cells[][];
-float cellSize = 10;
-int numberOfColumns,numberOfRows;
 
-int fillPercentage = 15;
-int generationNumber = 0;
+GameObject cells[][];
 boolean runNexGen = true;
+
+int generationNumber = 0;
+int ownFrameLimit = 2;
+int numberOfColumns,numberOfRows;
+int fillPercentage = 15;
+
+int lastFrame;
+int time;
+int deltaTime;
+float timeToPass = 1000f/(float)ownFrameLimit;
+
+float cellSize = 10;
 
 void setup()
 {
   size(800,800);
   frameRate(60);
-  //frame.setTitle("WOW");
   surface.setTitle("Generation: "+ generationNumber);
 
   numberOfRows =  (int)Math.floor(height/cellSize);
@@ -30,37 +37,29 @@ void setup()
 
     }
   }
-
+  /* Test */
 
   /* Test a stabile pattern: Block*/
   // cells[1][1].alive = true;
   // cells[1][2].alive = true;
   // cells[2][1].alive = true;
   
-  /* Test */
-
   /*Test: Gilder*/
   // cells[1][1].alive = true;
   // cells[2][2].alive = true;
   // cells[3][2].alive = true;
   // cells[3][1].alive = true;
   // cells[3][0].alive = true;
+  
   updateAllCellsNeighbourCount();
 }
-int ownFrameLimit = 2;
-int lastFrame;
-int time;
-int deltaTime;
-float timeToPass = 1000f/(float)ownFrameLimit;
 
 void draw()
 {
   int currentTime = millis();
   deltaTime = currentTime - time; 
   runNexGen = spaceTogg.toggled;
-  println(frameRate);
-  //println(spaceTogg.toggled);
-  //println("ownFrameLimit: "+ownFrameLimit);
+  //println(frameRate);
   
   toggleChecks();
   increaseDecreaseTimeBetweenFrames();
@@ -90,7 +89,7 @@ void draw()
   }
   time = currentTime;
   updateTitle();
-  
+
   //backSpaceOnce = true; 
 }
 public void updateAllCellsNeighbourCount()
@@ -148,6 +147,7 @@ public void increaseDecreaseTimeBetweenFrames()
 }
 public void updateTitle()
 {
+  /*Draws out on the title bar, depending on what is happening*/
   String titleString = "Generation: "+ generationNumber;
   titleString = titleString + " | FrameLimit: "+ ownFrameLimit;
 

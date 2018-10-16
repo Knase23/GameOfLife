@@ -9,6 +9,7 @@ application.macosx
 # Files
 *.java
 *.class
+*.gif
 # Folder created by Atom, when running processing
 */build
 # Folder created by Sublime Text 3, when running processing
