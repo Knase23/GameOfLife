@@ -1,4 +1,5 @@
-void mousePressed() {
+void mousePressed() 
+{
 	int posX = mouseX/(int)cellSize;
 	int posY = mouseY/(int)cellSize;
 
@@ -6,7 +7,8 @@ void mousePressed() {
 		cells[posX][posY].alive = true;
 }
 
-void mouseDragged() {
+void mouseDragged()
+ {
 	int posX = mouseX/(int)cellSize;
 	int posY = mouseY/(int)cellSize;
 	if(posX >= 0 && posX < numberOfColumns && posY >= 0 && posY <numberOfRows )

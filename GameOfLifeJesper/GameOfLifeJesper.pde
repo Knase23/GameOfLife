@@ -19,38 +19,7 @@ void setup()
   size(800,800);
   frameRate(60);
   surface.setTitle("Generation: "+ generationNumber);
-
-  numberOfRows =  (int)Math.floor(height/cellSize);
-  numberOfColumns = (int)Math.floor(width/cellSize);
-  ellipseMode(LEFT);
-  cells = new GameObject[numberOfColumns][numberOfRows];
-  
-  for(int x = 0; x < numberOfColumns; x++)
-  {
-    for(int y = 0; y < numberOfRows; y++)
-    {
-      cells[x][y] = new GameObject(x*cellSize, y *cellSize,cellSize);
-      if(random(0, 100) < fillPercentage)
-      {
-        cells[x][y].alive = true;
-      }
-
-    }
-  }
-  /* Test */
-
-  /* Test a stabile pattern: Block*/
-  // cells[1][1].alive = true;
-  // cells[1][2].alive = true;
-  // cells[2][1].alive = true;
-  
-  /*Test: Gilder*/
-  // cells[1][1].alive = true;
-  // cells[2][2].alive = true;
-  // cells[3][2].alive = true;
-  // cells[3][1].alive = true;
-  // cells[3][0].alive = true;
-  
+  gameSetup();  
   updateAllCellsNeighbourCount();
 }
 
@@ -59,10 +28,9 @@ void draw()
   int currentTime = millis();
   deltaTime = currentTime - time; 
   runNexGen = spaceTogg.toggled;
-  //println(frameRate);
   
-  toggleChecks();
-  increaseDecreaseTimeBetweenFrames();
+  checkButtonIsToggled();
+  frameLimitUpdate();
 
   /*Draws out depending on time since last frame*/
   if(currentTime - lastFrame > timeToPass)
@@ -72,96 +40,85 @@ void draw()
         updateAllCellsNeighbourCount();
         generationNumber++;
     }
-    background(0);
-  	for(int x = 0; x < numberOfColumns; x++)
-  	{
-     	for(int y = 0; y < numberOfRows; y++)
-     	{
 
-       	cells[x][y].draw();
-        if(runNexGen)
-        {
-           cells[x][y].checkIfAlive();
-        }
-      }
-  	 }
-     lastFrame = currentTime;
+    drawBackground();
+    drawGameBoard();
+
+    if(runNexGen)
+    {
+        updateAllCells();
+    }
+
+    lastFrame = currentTime;
   }
   time = currentTime;
-  updateTitle();
-
-  //backSpaceOnce = true; 
+  updateTitle(); 
 }
+
+
 public void updateAllCellsNeighbourCount()
 {
   for(int x = 0; x < numberOfColumns; x++)
   {
     for(int y = 0; y < numberOfRows; y++)
     {
-      int numberOfLivingAround = 0;
-      /*Top to Bottom*/
-      for (int i = -1; i < 2; ++i) {
-        /* Check if (x + i) is outside of the Array*/
-      	if(x + i >= 0 && x + i < numberOfColumns)
-      	{
-          /*Right to Left*/
-      		for (int j = -1; j < 2; ++j) {
-            /* Check if (y + j) is outside of the Array */
-      			if(y + j >= 0 && y + j < numberOfRows)
-      			{
-              /*Count up: number of living neighbours*/
-      				if(cells[x+i][y+j].alive && !(i == 0 && j == 0))
-      				{
-      					numberOfLivingAround++;
-      				}
-      			}
-      		}
-      	}
-      }
-      cells[x][y].numberOfNeighbours = numberOfLivingAround;
+      cells[x][y].numberOfNeighbours = calculateNumberOfLivingNeighbours(x,y);
     }
   }
-}
-
-public void increaseDecreaseTimeBetweenFrames()
-{
-  /* Increases the time interval when next time it should draw out*/
-  if(isNumpadPlusPressed) //&& !isNumpadPlusStillPressed)
-  {
-    ownFrameLimit++;
-    timeToPass = 1000f/(float)ownFrameLimit;
-  }
-  //isNumpadPlusStillPressed = isNumpadPlusPressed;
   
-  /* Increases the time interval when next time it should draw out*/
-  if(isNumpadMinusPressed)// && !isNumpadMinusStillPressed)
-  {
-    ownFrameLimit--;
-    if(ownFrameLimit < 1)
-      ownFrameLimit = 1;
-    timeToPass = 1000f/(float)ownFrameLimit;
-  }
-  //isNumpadMinusStillPressed = isNumpadMinusPressed;
-
-
 }
-public void updateTitle()
+
+public int calculateNumberOfLivingNeighbours(int x,int y)
 {
-  /*Draws out on the title bar, depending on what is happening*/
-  String titleString = "Generation: "+ generationNumber;
-  titleString = titleString + " | FrameLimit: "+ ownFrameLimit;
+  int numberOfLivingAround = 0;
+  for (int i = -1; i < 2; ++i)
+  {
+    if(isNotOutsideOfArray(x,i,numberOfColumns))
+    {
+      for (int j = -1; j < 2; ++j) {
+        if(isNotOutsideOfArray(y,j,numberOfRows))
+        {
+          if(cells[x+i][y+j].alive && !(i == 0 && j == 0))
+          {
+            numberOfLivingAround++;
+          }
+        }
+      }
+    }
+  }
+  return numberOfLivingAround;
+}
 
-  if (!runNexGen)
-    titleString = titleString + " | Paused"; 
+public boolean isNotOutsideOfArray(int axis,int otherAxis,int size)
+{
+  if (axis + otherAxis >= 0 && axis + otherAxis < size)
+    return true;
+  
+  return false;
+}
 
-  if(isSpacePressed)
-    titleString = titleString + " | Spacebar";
+public void drawBackground() 
+{
+   background(0);
+}
 
-  if(isNumpadPlusPressed)
-    titleString = titleString + " | Increase FrameLimit";
-
-  if(isNumpadMinusPressed)
-    titleString = titleString + " | Decrease FrameLimit";
-
-  surface.setTitle(titleString);
+public void drawGameBoard() 
+{
+  for(int x = 0; x < numberOfColumns; x++)
+    {
+      for(int y = 0; y < numberOfRows; y++)
+      {
+        cells[x][y].draw();
+      }
+    }
+}
+public void updateAllCells() 
+{
+   for(int x = 0; x < numberOfColumns; x++)
+    {
+      for(int y = 0; y < numberOfRows; y++)
+      {
+        cells[x][y].checkIfAlive();
+      }
+    }
 }

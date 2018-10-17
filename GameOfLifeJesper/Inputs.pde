@@ -7,7 +7,8 @@ boolean isNumpadMinusPressed = false;
 
 ToggleStruct spaceTogg = new ToggleStruct(500);
 
-void keyPressed() {
+void keyPressed() 
+{
 	if(keyCode == 32)
 		isSpacePressed = true;
 	if(keyCode == 107)
@@ -15,7 +16,8 @@ void keyPressed() {
 	if(keyCode == 109)
 		isNumpadMinusPressed = true;
 }
-void keyReleased() {
+void keyReleased() 
+{
 	if(keyCode == 32)
 		isSpacePressed = false;
 	if(keyCode == 107)
@@ -24,7 +26,7 @@ void keyReleased() {
 		isNumpadMinusPressed = false;
 }
 
-void toggleChecks()
+void checkButtonIsToggled()
 {
 	if(spaceTogg.CheckLastTime(isSpacePressed))
 	{

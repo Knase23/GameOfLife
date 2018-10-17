@@ -21,7 +21,19 @@ public class GameObject
     {
       alphaV = 255;
       /*Change color depending on how many neighbours around it*/
-      switch (numberOfNeighbours) {
+      changeCellColor();
+      fill(apperanceColor,alphaV);
+      ellipse(this.x,this.y,this.size,this.size);
+    } else {
+      alphaV -= 150;
+      fill(apperanceColor,alphaV);
+      ellipse(this.x,this.y,this.size,this.size);
+    }
+  }
+  
+  public void changeCellColor()
+  {
+    switch (numberOfNeighbours) {
         case 0 :
           apperanceColor = color(255, 30, 30);
         break; 
@@ -38,34 +50,17 @@ public class GameObject
           apperanceColor = color(255, 30, 30);
         break; 
       }
-      
-      fill(apperanceColor,alphaV);
-      ellipse(this.x,this.y,this.size,this.size);
-    } else {
-      alphaV -= 150;
-      fill(apperanceColor,alphaV);
-      ellipse(this.x,this.y,this.size,this.size);
-    }
   }
 
-
   public void checkIfAlive() {
-    if(numberOfNeighbours < 2)
+    if(numberOfNeighbours < 2 || numberOfNeighbours > 3 )
     {
       alive = false;
-    } 
-    else if(numberOfNeighbours > 3)
-    {
-      alive = false;
-    } 
-    else if(alive)
-    {
-      alive = true;
-    }
-
-    if(!alive && numberOfNeighbours == 3)
+    }  
+    if(numberOfNeighbours == 3)
     {
       alive = true;
     }    
   }
+
 }
