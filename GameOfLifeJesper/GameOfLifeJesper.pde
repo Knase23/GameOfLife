@@ -93,9 +93,9 @@ public int calculateNumberOfLivingNeighbours(int x,int y)
   return numberOfLivingAround;
 }
 
-public boolean isNotOutsideOfArray(int position,int offset,int size)
+public boolean isNotOutsideOfArray(int position,int offset,int arraySize)
 {
-  if (position + offset >= 0 && position + offset < size)
+  if (position + offset >= 0 && position + offset < arraySize)
     return true;
   
   return false;

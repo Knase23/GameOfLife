@@ -35,7 +35,8 @@ public void spawnAcorn(int x,int y)
   //Base from Bottom-Left
 
   cells[x][y].alive = true;
-  try {
+  try 
+  {
     cells[x + 1][y].alive = true;
     cells[x + 1][y - 2].alive = true;
     cells[x + 3][y - 1].alive = true;

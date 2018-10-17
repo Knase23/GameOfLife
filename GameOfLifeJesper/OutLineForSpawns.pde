@@ -1,9 +1,8 @@
 public void outLineBlock(int x,int y) 
-{
+{	
 	ellipse(x, y, cellSize, cellSize);
 	ellipse(x, y + (cellSize * 1), cellSize, cellSize);
-	ellipse(x + (cellSize * 1), y, cellSize, cellSize);
-		
+	ellipse(x + (cellSize * 1), y, cellSize, cellSize);		
 }
 
 public void outLineGlider(int x, int y) 

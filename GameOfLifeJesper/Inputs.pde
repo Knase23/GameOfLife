@@ -26,9 +26,8 @@ public void keyPressed()
 	
 	if(keyCode == 109)
 		isNumpadMinusPressed = true;
-	
-	
 }
+
 public void keyReleased() 
 {
 	if(keyCode == 65)
