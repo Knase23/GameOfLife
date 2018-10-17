@@ -10,6 +10,12 @@ public class ToggleStruct{
 		this.lastTime = 0;
 		this.timeInBetweenChecks = timeBetween;
 	}
+	public ToggleStruct () 
+	{
+		this.toggled = false;
+		this.lastTime = 0;
+		this.timeInBetweenChecks = 500;
+	}
 	public boolean CheckLastTime(boolean isItPressed) 
 	{
 

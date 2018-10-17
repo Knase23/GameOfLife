@@ -1,4 +1,4 @@
-
+Settings config;
 GameObject cells[][];
 boolean runNexGen = true;
 
@@ -16,6 +16,7 @@ float cellSize = 10;
 
 void setup()
 {
+  cursor(CROSS);
   size(800,800);
   frameRate(60);
   surface.setTitle("Generation: "+ generationNumber);
@@ -41,8 +42,10 @@ void draw()
         generationNumber++;
     }
 
+    
     drawBackground();
     drawGameBoard();
+    viewOutLines();
 
     if(runNexGen)
     {
@@ -65,7 +68,7 @@ public void updateAllCellsNeighbourCount()
       cells[x][y].numberOfNeighbours = calculateNumberOfLivingNeighbours(x,y);
     }
   }
-  
+
 }
 
 public int calculateNumberOfLivingNeighbours(int x,int y)
@@ -75,7 +78,8 @@ public int calculateNumberOfLivingNeighbours(int x,int y)
   {
     if(isNotOutsideOfArray(x,i,numberOfColumns))
     {
-      for (int j = -1; j < 2; ++j) {
+      for (int j = -1; j < 2; ++j) 
+      {
         if(isNotOutsideOfArray(y,j,numberOfRows))
         {
           if(cells[x+i][y+j].alive && !(i == 0 && j == 0))
@@ -89,9 +93,9 @@ public int calculateNumberOfLivingNeighbours(int x,int y)
   return numberOfLivingAround;
 }
 
-public boolean isNotOutsideOfArray(int axis,int otherAxis,int size)
+public boolean isNotOutsideOfArray(int position,int offset,int size)
 {
-  if (axis + otherAxis >= 0 && axis + otherAxis < size)
+  if (position + offset >= 0 && position + offset < size)
     return true;
   
   return false;

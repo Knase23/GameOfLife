@@ -8,8 +8,8 @@ public class GameObject
   
   public GameObject(float x,float y,float size)
   {
-    this.x = x;
-    this.y = y;
+    this.x = x * size;
+    this.y = y * size;
     this.size = size;
   }
   
@@ -30,7 +30,7 @@ public class GameObject
       ellipse(this.x,this.y,this.size,this.size);
     }
   }
-  
+
   public void changeCellColor()
   {
     switch (numberOfNeighbours) {
